@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 class TinyStatistician:
     def __init__(self):
@@ -17,9 +18,9 @@ class TinyStatistician:
             y = x
             y.sort()
             if len(x) % 2 == 1:
-                return float(y[int(len(y) / 2)])
+                return float(y[len(y) // 2])
             else:
-                return (self.mean([y[int((len(y) / 2) - 1)], y[int(len(y) / 2)]]))
+                return (self.mean([y[(len(y) // 2) - 1], y[len(y) // 2]]))
         else:
             return None
 
@@ -27,6 +28,18 @@ class TinyStatistician:
         if (isinstance(x, list) and x) or (isinstance(x, np.ndarray) and x.size > 0):
             y = x
             y.sort()
-            if len(x) % 2 == 1:
-                if ((len(x) / 2) % 2 == 1):
-                    return (float(y[]))
+            if len(y) % 2 == 1:
+                left = x[:(len(y) // 2)]
+                right = x[(len(y) // 2) + 1:]
+            else:
+                left = x[:(len(y) // 2)]
+                right = x[(len(y) // 2):]
+            return [self.median(left), self.median(right)]
+
+    def var(self, x):
+        m = self.mean(x)
+        var = float(sum(pow(val - m, 2) for val in x) / len(x))
+        return var
+    
+    def std(self, x):
+        return (math.sqrt(self.var(x)))
